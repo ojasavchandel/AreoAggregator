@@ -37,3 +37,40 @@ Granular Filtering: Real-time filtering by stops, departure time blocks, airline
 📦 Tech Stack
 Frontend: React, Vite, Tailwind CSS, Three.js, @react-three/fiber, @react-three/drei
 Backend: Python, FastAPI, Uvicorn, Playwright (Async)
+
+### Quick Start
+
+**Prerequisites:** Python 3.10+ and Node.js (v18+)
+
+#### 1. Clone the Repository
+```bash
+git clone [https://github.com/your-username/aero-aggregator.git](https://github.com/your-username/aero-aggregator.git)
+cd aero-aggregator
+```
+
+2. Run the Backend
+
+```Bash
+
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+playwright install chromium
+uvicorn main:app --reload --port 8000
+```
+
+3. Run the Frontend
+Open a separate terminal window:
+```Bash
+cd UI
+npm install
+npm run dev
+```
+
+Navigate to http://localhost:5173 in your browser.
+
+Problem Statement Alignment (MoSPI / CPI)
+Developed to address national data collection requirements for retail inflation indexing, bridging the gap between fragmented travel ecosystems and institutional economic monitoring across high-traffic Indian city-pairs.
+
+
