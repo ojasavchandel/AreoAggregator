@@ -9,6 +9,8 @@ import datetime
 
 app = FastAPI(title="Aero UI Flight API")
 
+PRICE_CACHE = {}
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
@@ -18,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = "Economy", return_date: Optional[str] = None) -> Dict[str, Any]:
+async def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = "Economy", return_date: Optional[str] = None) -> Dict[str, Any]:
     # Use route and date to seed the random generator for consistency
     seed_str = f"{origin}-{dest}-{date_str}-{travel_class}"
     random.seed(seed_str)
@@ -43,7 +45,19 @@ def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = 
         {"name": "AIX Connect", "code": "IX"}
     ]
 
-    base_price_min = random.randint(3000, 5000)
+    cache_key = f"{origin}-{dest}-{date_str}"
+    if cache_key in PRICE_CACHE:
+        real_base = PRICE_CACHE[cache_key]
+    else:
+        try:
+            from scrapers.ota_scraper import scrape_ota
+            res = await scrape_ota(origin, dest, date_str)
+            real_base = res.get("base_fare", 5000)
+        except Exception:
+            real_base = random.randint(4000, 7000)
+        PRICE_CACHE[cache_key] = real_base
+        
+    base_price_min = max(2000, real_base - 800)
     
     multiplier = 1.0
     if travel_class.lower() == "premium economy":
@@ -170,7 +184,7 @@ def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = 
     
     if return_date:
         # Generate return flights by swapping origin and dest, and using return_date
-        return_response = generate_flights(dest, origin, return_date, travel_class)
+        return_response = await generate_flights(dest, origin, return_date, travel_class)
         response["return_flights"] = return_response["flights"]
         response["return_date"] = return_date
         response["route"] = f"{origin} ⮂ {dest}"
@@ -179,4 +193,4 @@ def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = 
 
 @app.get("/api/flights")
 async def get_flights(origin: str, destination: str, date: str, travel_class: str = "Economy", return_date: Optional[str] = None):
-    return generate_flights(origin, destination, date, travel_class, return_date)
+    return await generate_flights(origin, destination, date, travel_class, return_date)

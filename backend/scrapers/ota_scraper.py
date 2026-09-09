@@ -1,5 +1,7 @@
 import asyncio
 from playwright.async_api import async_playwright
+import random
+
 import re
 
 async def scrape_ota(origin: str, destination: str, date: str) -> dict:
