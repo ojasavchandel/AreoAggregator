@@ -1,24 +1,14 @@
-# pyrefly: ignore [missing-import]
-from fastapi import FastAPI, HTTPException
-# pyrefly: ignore [missing-import]
-from fastapi.middleware.cors import CORSMiddleware
-from typing import Dict, Any, Optional
-import time
-import random
-import datetime
+import re
 
-app = FastAPI(title="Aero UI Flight API")
+with open('backend/main.py', 'r') as f:
+    content = f.read()
 
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Make sure we import Optional
+if 'from typing import Dict, Any, Optional' not in content:
+    content = content.replace('from typing import Dict, Any', 'from typing import Dict, Any, Optional')
 
-def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = "Economy", return_date: Optional[str] = None) -> Dict[str, Any]:
+# We'll completely replace the generate_flights and get_flights functions
+new_logic = """def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = "Economy", return_date: Optional[str] = None) -> Dict[str, Any]:
     # Use route and date to seed the random generator for consistency
     seed_str = f"{origin}-{dest}-{date_str}-{travel_class}"
     random.seed(seed_str)
@@ -179,4 +169,10 @@ def generate_flights(origin: str, dest: str, date_str: str, travel_class: str = 
 
 @app.get("/api/flights")
 async def get_flights(origin: str, destination: str, date: str, travel_class: str = "Economy", return_date: Optional[str] = None):
-    return generate_flights(origin, destination, date, travel_class, return_date)
+    return generate_flights(origin, destination, date, travel_class, return_date)"""
+
+# Use regex to replace the function entirely
+content = re.sub(r'def generate_flights.*?$', new_logic, content, flags=re.DOTALL)
+
+with open('backend/main.py', 'w') as f:
+    f.write(content)
