@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import * as XLSX from 'xlsx';
 import { Plane, AlertCircle, ArrowDownUp, RefreshCw, CheckCircle2, Info, Navigation, Search, MapPin, Calendar, Clock, ArrowRight, Zap, TrendingDown, Bell, Filter, X } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import FlightCanvas from './components/FlightCanvas';
@@ -129,6 +130,49 @@ export default function App() {
     'IX': 'bg-teal-600'
   };
 
+
+  const handleExportExcel = () => {
+    if (!dashboardData) {
+      alert("Please search for flights first to generate the report.");
+      return;
+    }
+    
+    const wsData = [];
+    
+    const processFlights = (flights, type) => {
+      flights.forEach(f => {
+        f.ota_breakdown.forEach(ota => {
+          wsData.push({
+            "Trip Type": type,
+            "Airline": f.airline,
+            "Flight Number": f.flight_number,
+            "Departure Time": f.departure_time,
+            "Arrival Time": f.arrival_time,
+            "Duration": f.duration,
+            "Stops": f.stops,
+            "OTA Provider": ota.provider_name,
+            "Base Fare (INR)": ota.base_fare,
+            "Convenience Fee (INR)": ota.convenience_fee,
+            "Promo Discount (INR)": ota.promo_discount,
+            "Net Price (INR)": ota.net_price,
+            "Is Cheapest OTA": ota.provider_name === f.cheapest_ota ? "Yes" : "No"
+          });
+        });
+      });
+    };
+    
+    processFlights(dashboardData.flights, "Departure");
+    if (dashboardData.return_flights) {
+      processFlights(dashboardData.return_flights, "Return");
+    }
+    
+    const ws = XLSX.utils.json_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Flight Pricing Data");
+    
+    XLSX.writeFile(wb, `AeroAggregator_Gov_Report_${date}.xlsx`);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans relative overflow-x-hidden">
       
@@ -156,8 +200,8 @@ export default function App() {
             <div onClick={() => setShowArchitecture(true)} className="bg-white/10 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-100 transition shadow-sm">
               Architecture
             </div>
-            <div className="bg-white/10 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-full border border-slate-200 cursor-pointer hover:bg-white/20 transition">
-              Top Deals
+            <div onClick={handleExportExcel} className={`text-xs font-bold px-3 py-1.5 rounded-full border cursor-pointer transition shadow-sm flex items-center gap-1 ${dashboardData ? 'bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100' : 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed'}`}>
+              <Download className="w-3.5 h-3.5" /> Export Data (XLSX)
             </div>
           </div>
         </div>
@@ -403,7 +447,50 @@ export default function App() {
                   <div className="space-y-3">
                     {Object.keys(airlineCounts).sort().map(code => {
                       const name = dashboardData.flights.find(f => f.airline_code === code)?.airline;
-                      return (
+                    
+  const handleExportExcel = () => {
+    if (!dashboardData) {
+      alert("Please search for flights first to generate the report.");
+      return;
+    }
+    
+    const wsData = [];
+    
+    const processFlights = (flights, type) => {
+      flights.forEach(f => {
+        f.ota_breakdown.forEach(ota => {
+          wsData.push({
+            "Trip Type": type,
+            "Airline": f.airline,
+            "Flight Number": f.flight_number,
+            "Departure Time": f.departure_time,
+            "Arrival Time": f.arrival_time,
+            "Duration": f.duration,
+            "Stops": f.stops,
+            "OTA Provider": ota.provider_name,
+            "Base Fare (INR)": ota.base_fare,
+            "Convenience Fee (INR)": ota.convenience_fee,
+            "Promo Discount (INR)": ota.promo_discount,
+            "Net Price (INR)": ota.net_price,
+            "Is Cheapest OTA": ota.provider_name === f.cheapest_ota ? "Yes" : "No"
+          });
+        });
+      });
+    };
+    
+    processFlights(dashboardData.flights, "Departure");
+    if (dashboardData.return_flights) {
+      processFlights(dashboardData.return_flights, "Return");
+    }
+    
+    const ws = XLSX.utils.json_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Flight Pricing Data");
+    
+    XLSX.writeFile(wb, `AeroAggregator_Gov_Report_${date}.xlsx`);
+  };
+
+  return (
                         <div key={code} onClick={() => handleToggleAirline(code)} className="flex items-center justify-between cursor-pointer group">
                           <div className="flex items-center gap-3">
                             <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${airlinesFilter.includes(code) ? 'bg-blue-500 border-blue-500' : 'border-slate-200 group-hover:border-slate-500'}`}>
@@ -563,7 +650,50 @@ export default function App() {
                             <tbody>
                               {flight.ota_breakdown.map((ota, idx) => {
                                 const isLowest = idx === 0;
-                                return (
+                              
+  const handleExportExcel = () => {
+    if (!dashboardData) {
+      alert("Please search for flights first to generate the report.");
+      return;
+    }
+    
+    const wsData = [];
+    
+    const processFlights = (flights, type) => {
+      flights.forEach(f => {
+        f.ota_breakdown.forEach(ota => {
+          wsData.push({
+            "Trip Type": type,
+            "Airline": f.airline,
+            "Flight Number": f.flight_number,
+            "Departure Time": f.departure_time,
+            "Arrival Time": f.arrival_time,
+            "Duration": f.duration,
+            "Stops": f.stops,
+            "OTA Provider": ota.provider_name,
+            "Base Fare (INR)": ota.base_fare,
+            "Convenience Fee (INR)": ota.convenience_fee,
+            "Promo Discount (INR)": ota.promo_discount,
+            "Net Price (INR)": ota.net_price,
+            "Is Cheapest OTA": ota.provider_name === f.cheapest_ota ? "Yes" : "No"
+          });
+        });
+      });
+    };
+    
+    processFlights(dashboardData.flights, "Departure");
+    if (dashboardData.return_flights) {
+      processFlights(dashboardData.return_flights, "Return");
+    }
+    
+    const ws = XLSX.utils.json_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Flight Pricing Data");
+    
+    XLSX.writeFile(wb, `AeroAggregator_Gov_Report_${date}.xlsx`);
+  };
+
+  return (
                                   <tr key={ota.provider_name} className={`border-b border-slate-200/50 transition hover:bg-white/50 ${isLowest ? 'bg-emerald-50' : ''}`}>
                                     <td className="py-3 px-4">
                                       <div className="font-bold text-slate-900 text-sm">{ota.provider_name}</div>
