@@ -6,7 +6,7 @@ import Airplane from './Airplane';
 export default function FlightCanvas() {
   return (
     <div className="absolute inset-0 z-0 h-[600px] pointer-events-auto">
-      <Canvas frameloop="demand" dpr={1} camera={{ position: [0, 0, 14], fov: 45 }}>
+      <Canvas dpr={1} camera={{ position: [0, 0, 14], fov: 45 }}>
         <color attach="background" args={['#f0f7ff']} />
         <ambientLight intensity={2.5} />
         <directionalLight position={[10, 15, 8]} intensity={3.5} color={'#ffffff'} />
