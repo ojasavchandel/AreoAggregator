@@ -1,36 +1,33 @@
+
+!.vscode/extensions.json
+# Editor directories and files
 # Logs
-logs
+# Node
+# OS
+# Python
+*$py.class
+*.local
 *.log
+*.njsproj
+*.ntvs*
+*.py[cod]
+*.sln
+*.suo
+*.sw?
+.DS_Store
+.env
+.idea/
+.venv/
+.vscode/
+__pycache__/
+dist-ssr/
+dist/
+env/
+lerna-debug.log*
+logs
+node_modules/
 npm-debug.log*
+pnpm-debug.log*
+venv/
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Node
-node_modules/
-dist/
-dist-ssr/
-*.local
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-venv/
-env/
-.venv/
-.env
-
-# OS
-.DS_Store
-
-# Editor directories and files
-.vscode/
-!.vscode/extensions.json
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
