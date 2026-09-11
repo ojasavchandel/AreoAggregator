@@ -7,11 +7,16 @@ import time
 import random
 import datetime
 
-app = FastAPI(title="Aero UI Flight API")
+app = FastAPI(title="Aero UI Flight API", root_path="/api")
 
 PRICE_CACHE = {}
 
 # Configure CORS
+
+@app.get("/")
+def read_root():
+    return {"status": "API is alive and routing correctly!"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
