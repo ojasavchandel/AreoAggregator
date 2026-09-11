@@ -34,7 +34,7 @@ export default function App() {
     setExpandedFlightId(null);
     setViewingReturn(false);
     try {
-      let url = `http://localhost:8000/api/flights?origin=${o}&destination=${d}&date=${dt}&travel_class=${cls}`;
+      let url = `/api/flights?origin=${o}&destination=${d}&date=${dt}&travel_class=${cls}`;
       if (type === 'Round Trip') url += `&return_date=${rDate}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("API error");
