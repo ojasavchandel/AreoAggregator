@@ -196,6 +196,6 @@ async def generate_flights(origin: str, dest: str, date_str: str, travel_class: 
         
     return response
 
-@app.get("/api/flights")
+@app.get("/flights")
 async def get_flights(origin: str, destination: str, date: str, travel_class: str = "Economy", return_date: Optional[str] = None):
     return await generate_flights(origin, destination, date, travel_class, return_date)
