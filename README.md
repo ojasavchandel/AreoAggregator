@@ -143,4 +143,4 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ---
 
-<p align="center">Built with ❤️ for Smart India Hackathon</p>
+<p align="center">Built with ❤️</p>
